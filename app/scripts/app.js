@@ -33,3 +33,6 @@ app.factory('highcharts', function ($window) {
     return $window.Highcharts;
 });
 
+app.factory('HubiquitusClient', function($window){
+    return $window.HubiquitusClient;
+});

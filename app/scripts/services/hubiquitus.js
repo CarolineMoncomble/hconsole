@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('hconsoleApp').factory('hubiquitus', function ($rootScope, $window) {
+angular.module('hconsoleApp').factory('hubiquitus', function ($rootScope, $window ){
 
     $rootScope.safeApply = function (fn) {
         var phase = this.$root.$$phase;
@@ -13,29 +13,33 @@ angular.module('hconsoleApp').factory('hubiquitus', function ($rootScope, $windo
         }
     };
 
-    var hClient,
-        connected = false,
-        currentChannel = undefined,
-        onConnectedCallback, onConnectingCallback, onErrorCallback, onDisconnectedCallback, onMessageCallback;
+    var hClient;
+    var connected = false;
+    var currentChannel = undefined;
+    var onConnectedCallback, onConnectingCallback, onErrorCallback, onDisconnectedCallback, onMessageCallback;
+
 
     // Parsing du hMessage pour les arbres de données et les graphs
     var HMessage = function (hMessage) {
         if (hMessage.type === 'peer-info') {
+            console.log('parsing d hubiquitus js');
             var payload = hMessage.payload;
 
-            this.peerId = payload.peerId,
-            this.domain = this.peerId.substr(0, this.peerId.lastIndexOf(':')),
-            this.host = payload.peerIP,
-            this.process = payload.peerPID,
-            this.actor = this.peerId.substr(this.peerId.lastIndexOf(':') + 1),
-            this.ressource = payload.peerRessource,
+            this.peerId = payload.peerId;
+            this.domain = this.peerId.substr(0, this.peerId.lastIndexOf(':'));
+            this.host = payload.peerIP;
+            this.process = payload.peerPID;
+            this.actor = this.peerId.substr(this.peerId.lastIndexOf(':') + 1);
+            this.ressource = payload.peerResource;
             this.type = payload.peerType.toLowerCase();
             this.status = payload.peerStatus;
+
         }
     };
 
+
     function init() {
-        hClient = $window.hClient;
+        hClient = $window.hClient;     //hClient = new HubiquitusClient();
 
         hClient.onStatus = function (hStatus) {
             //console.debug('onStatus', hStatus);
@@ -102,11 +106,11 @@ angular.module('hconsoleApp').factory('hubiquitus', function ($rootScope, $windo
             }
 
             hClient.onMessage = function (hMessage) {
-                //console.debug('onMessage', hMessage);
+                console.debug('onMessage!', hMessage);
 
                 if (typeof onMessageCallback === 'function') {
                     $rootScope.safeApply(function () {
-                        onMessageCallback.call(this, new HMessage(hMessage), hMessage.type);
+                        onMessageCallback.call(this, new HMessage(hMessage), hMessage.type);  //onMessageCallback.call(this, hMessage)
                     });
                 }
             };
@@ -161,5 +165,6 @@ angular.module('hconsoleApp').factory('hubiquitus', function ($rootScope, $windo
             return currentChannel;
         }
     };
+
 
 });

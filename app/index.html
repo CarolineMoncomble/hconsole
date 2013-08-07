@@ -35,7 +35,7 @@
 <div class="container" data-ng-view></div>
 
 <!-- build:js scripts/vendor/hubiquitus4js.js -->
-<script src="components/hubiquitus4js/hubiquitus-min.js"></script>
+<script data-main="loader" src="libs/require.js"></script>
 <!-- endbuild -->
 <!-- build:js scripts/vendor/jquery.js -->
 <script src="components/jquery/jquery.js"></script>
@@ -58,6 +58,7 @@
 <script src="scripts/controllers/connect.js"></script>
 <script src="scripts/controllers/navbar.js"></script>
 <script src="scripts/directives/chart.js"></script>
+<script src="scripts/services/chartGraph.js"></script>
 <script src="scripts/services/hubiquitus.js"></script>
 <script src="scripts/services/circlegraph.js"></script>
 <script src="scripts/services/treegraph.js"></script>

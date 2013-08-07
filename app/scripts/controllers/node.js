@@ -1,11 +1,28 @@
 'use strict';
 
-angular.module('hconsoleApp').controller('NodeCtrl', function ($rootScope, $location, $routeParams, $scope, hubiquitus) {
-    if (!$routeParams.sessionid || !hubiquitus.isConnected()) {
-        $location.path('/');
-    }
+angular.module('hconsoleApp').controller('NodeCtrl', function ($rootScope, $location, $routeParams, $scope, hubiquitus, dataTree, ChartGraph) {
 
-    $scope.processes = [];
+
+    /*if (!$routeParams.sessionid || !hubiquitus.isConnected()) {
+        $location.path('/');
+    }*/
+
+    dataTree.testConnect();
+
+    // Initialisation du graphique
+    var Graph = new ChartGraph('#graphSpace', dataTree.nodal.data);
+
+    dataTree.nodal.on('update');
+
+
+    $scope.$on('$destroy', function () {
+        dataTree.nodal.onUpdate = null;
+    });
+
+    /*$scope.processes = [];
+
+    //var chartGraph = new ChartGraph();
+    //console.log(chartGraph);
 
     function findProcess(pid) {
         for (var i = 0; i < $scope.processes.length; i++) {
@@ -26,10 +43,15 @@ angular.module('hconsoleApp').controller('NodeCtrl', function ($rootScope, $loca
         }
         return null;
     }
+    var now = new Date().getTime();
+    console.log(now);*/
 
-    /*hubiquitus.onMessage(function (hMessage) {
+
+
+
+    /*
+    hubiquitus.onMessage(function (hMessage) {
         if (hMessage.type === 'peer-info') {
-        console.log('node');
             var peerInfo = hMessage.payload;
 
             var now = new Date().getTime();
@@ -69,10 +91,23 @@ angular.module('hconsoleApp').controller('NodeCtrl', function ($rootScope, $loca
         }
     });
 
+    hubiquitus.onError(function (message) {
+        $rootScope.state = 'error';
+        $rootScope.error = message;
+        $location.path('/');
+    });
+
+    hubiquitus.onDisconnected(function () {
+        $rootScope.state = 'disconnected';
+        delete $rootScope.error;
+        $location.path('/');
+    });
+
     $scope.$on('$destroy', function () {
         hubiquitus.onMessage(undefined);
         hubiquitus.onError(undefined);
         hubiquitus.onDisconnected(undefined);
     });
-    */
+
+     */
 });

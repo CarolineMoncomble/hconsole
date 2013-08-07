@@ -7,6 +7,7 @@ angular.module('hconsoleApp').controller('LogicCtrl', function ($rootScope, $sco
 	var Graph = new CircleGraph('#graphSpace', dataTree.logical.data).draw();
     dataTree.logical.on('update', Graph.draw);
 
+
     $scope.$on('$destroy', function () {
         dataTree.logical.onUpdate = null;
     });

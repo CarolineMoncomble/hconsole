@@ -18,7 +18,8 @@
     }
 </style>
 
-<div class="row-fluid show-grid">
+<!--<div class="row-fluid show-grid">-->
+<div id="graphSpace" class="row-fluid show-grid">
     <div class="span12">
         <div data-ng-class="visibility" class="panel" data-ng-repeat="process in processes" data-ng-animate="'fade'">
             <div class="title"><span>node #{{ process.pid }}</span><span>{{ process.uptime }}</span></div>
